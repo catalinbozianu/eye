@@ -32,7 +32,10 @@ class Worker extends OriginalWorker
         } catch (Throwable $e) {
             $this->recordJobException($e);
         } finally {
-            $this->recordJobEnd($startTime);
+            // Don't log Sonar Job in queue history
+            if($job->resolveName() != "Eyewitness\\Eye\\Queue\\Jobs\\Sonar") {
+                $this->recordJobEnd($startTime);
+            }
         }
     }
 }
